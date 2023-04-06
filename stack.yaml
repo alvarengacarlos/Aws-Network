@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This is a simple network architecture"
+
+Resources:
+    # Total addresses: 64
+    # Network address: 172.16.0.0
+    # Broadcast: 172.16.0.64
+    # Netmask: /26
+    PrivateVpc:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: 172.16.0.0/26
+            EnableDnsHostnames: false
+            EnableDnsSupport: false
+    # Total addresses: 16
+    # Network address: 172.16.0.0
+    # Broadcast: 172.16.0.15
+    # Netmask: /28
+    PublicSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 172.16.0.0/28
+            VpcId: !Ref PrivateVpc
+    # Total addresses: 16
+    # Network address: 172.16.0.16
+    # Broadcast: 172.16.0.31
+    # Netmask: /28
+    PrivateSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 172.16.0.16/28
+            VpcId: !Ref PrivateVpc
+    # Total addresses: 16
+    # Network address: 172.16.0.32
+    # Broadcast: 172.16.0.47
+    # Netmask: /28
+    HeadStoreSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 172.16.0.32/28
+            VpcId: !Ref PrivateVpc
+    # Total addresses: 16
+    # Network address: 172.16.0.48
+    # Broadcast: 172.16.0.64
+    # Netmask: /28
+    BranchStoresSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 172.16.0.48/28
+            VpcId: !Ref PrivateVpc
+    
