@@ -3,6 +3,8 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "This is a simple network architecture"
 
 Resources:
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway
     # Total addresses: 64
     # Network address: 172.16.0.0
     # Broadcast: 172.16.0.64
@@ -13,6 +15,26 @@ Resources:
             CidrBlock: 172.16.0.0/26
             EnableDnsHostnames: false
             EnableDnsSupport: false
+    VpcGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties: 
+            InternetGatewayId: !Ref InternetGateway
+            VpcId: !Ref PrivateVpc
+    RouteTableForPublicSubnet:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref PrivateVpc
+    InternetRoute:
+        Type: AWS::EC2::Route
+        Properties:
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref InternetGateway
+            RouteTableId: !Ref RouteTableForPublicSubnet    
+    PublicHeadStoreSubnetAndRouteTableForPublicSubnetAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:          
+            RouteTableId: !Ref RouteTableForPublicSubnet
+            SubnetId: !Ref PublicHeadStoreSubnet
     # Total addresses: 16
     # Network address: 172.16.0.0
     # Broadcast: 172.16.0.15
@@ -37,6 +59,11 @@ Resources:
     # Network address: 172.16.0.32
     # Broadcast: 172.16.0.47
     # Netmask: /28
+    PublicBranchStoreSubnetAndRouteTableForPublicSubnetAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:          
+            RouteTableId: !Ref RouteTableForPublicSubnet
+            SubnetId: !Ref PublicBranchStoreSubnet
     PublicBranchStoreSubnet:
         Type: AWS::EC2::Subnet
         Properties:
