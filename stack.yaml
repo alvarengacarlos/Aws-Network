@@ -15,7 +15,7 @@ Resources:
             CidrBlock: 172.16.0.0/26
             EnableDnsHostnames: false
             EnableDnsSupport: false
-    VpcGatewayAttachment:
+    InternetGatewayAndPrivateVpcAssociation:
         Type: AWS::EC2::VPCGatewayAttachment
         Properties: 
             InternetGatewayId: !Ref InternetGateway
@@ -30,16 +30,16 @@ Resources:
             DestinationCidrBlock: 0.0.0.0/0
             GatewayId: !Ref InternetGateway
             RouteTableId: !Ref RouteTableForPublicSubnet    
-    PublicHeadStoreSubnetAndRouteTableForPublicSubnetAssociation:
+    RouteTableForPublicSubnetAndPublicSubnetAssociation:
         Type: AWS::EC2::SubnetRouteTableAssociation
         Properties:          
             RouteTableId: !Ref RouteTableForPublicSubnet
-            SubnetId: !Ref PublicHeadStoreSubnet
+            SubnetId: !Ref PublicSubnet
     # Total addresses: 16
     # Network address: 172.16.0.0
     # Broadcast: 172.16.0.15
     # Netmask: /28
-    PublicHeadStoreSubnet:
+    PublicSubnet:
         Type: AWS::EC2::Subnet
         Properties:
             AvailabilityZone: "us-east-1a"
@@ -49,22 +49,17 @@ Resources:
     # Network address: 172.16.0.16
     # Broadcast: 172.16.0.31
     # Netmask: /28
-    PrivateHeadStoreSubnet:
+    PrivateSubnet0:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: "us-east-1a"
+            AvailabilityZone: "us-east-1b"
             CidrBlock: 172.16.0.16/28
             VpcId: !Ref PrivateVpc
     # Total addresses: 16
     # Network address: 172.16.0.32
     # Broadcast: 172.16.0.47
     # Netmask: /28
-    PublicBranchStoreSubnetAndRouteTableForPublicSubnetAssociation:
-        Type: AWS::EC2::SubnetRouteTableAssociation
-        Properties:          
-            RouteTableId: !Ref RouteTableForPublicSubnet
-            SubnetId: !Ref PublicBranchStoreSubnet
-    PublicBranchStoreSubnet:
+    PrivateSubnet1:
         Type: AWS::EC2::Subnet
         Properties:
             AvailabilityZone: "us-east-1b"
@@ -74,7 +69,7 @@ Resources:
     # Network address: 172.16.0.48
     # Broadcast: 172.16.0.64
     # Netmask: /28
-    PrivateBranchStoreSubnet:
+    PrivateSubnet2:
         Type: AWS::EC2::Subnet
         Properties:
             AvailabilityZone: "us-east-1b"
