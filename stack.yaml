@@ -3,8 +3,9 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "This is a simple network architecture"
 
 Resources:
-    InternetGateway:
-        Type: AWS::EC2::InternetGateway
+    ###################
+    # Logical Network #
+    ###################
     # Total addresses: 64
     # Network address: 172.16.0.0
     # Broadcast: 172.16.0.64
@@ -15,26 +16,6 @@ Resources:
             CidrBlock: 172.16.0.0/26
             EnableDnsHostnames: false
             EnableDnsSupport: false
-    InternetGatewayAndPrivateVpcAssociation:
-        Type: AWS::EC2::VPCGatewayAttachment
-        Properties: 
-            InternetGatewayId: !Ref InternetGateway
-            VpcId: !Ref PrivateVpc
-    RouteTableForPublicSubnet:
-        Type: AWS::EC2::RouteTable
-        Properties:
-            VpcId: !Ref PrivateVpc
-    InternetRoute:
-        Type: AWS::EC2::Route
-        Properties:
-            DestinationCidrBlock: 0.0.0.0/0
-            GatewayId: !Ref InternetGateway
-            RouteTableId: !Ref RouteTableForPublicSubnet    
-    RouteTableForPublicSubnetAndPublicSubnetAssociation:
-        Type: AWS::EC2::SubnetRouteTableAssociation
-        Properties:          
-            RouteTableId: !Ref RouteTableForPublicSubnet
-            SubnetId: !Ref PublicSubnet
     # Total addresses: 16
     # Network address: 172.16.0.0
     # Broadcast: 172.16.0.15
@@ -62,7 +43,7 @@ Resources:
     PrivateSubnet1:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: "us-east-1b"
+            AvailabilityZone: "us-east-1c"
             CidrBlock: 172.16.0.32/28
             VpcId: !Ref PrivateVpc
     # Total addresses: 16
@@ -72,7 +53,64 @@ Resources:
     PrivateSubnet2:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: "us-east-1b"
+            AvailabilityZone: "us-east-1d"
             CidrBlock: 172.16.0.48/28
             VpcId: !Ref PrivateVpc
-    
+    ################ 
+    # Network Acls #
+    ################
+    MyNetworkAcl:
+        Type: AWS::EC2::NetworkAcl
+        Properties:
+            VpcId: !Ref PrivateVpc
+    InboundMyNetworkAclRule:
+        Type: AWS::EC2::NetworkAclEntry
+        Properties:
+            CidrBlock: 0.0.0.0/0
+            Egress: false
+            NetworkAclId: !Ref MyNetworkAcl
+            Protocol: -1
+            RuleAction: deny
+            RuleNumber: 1
+    OutboundMyNetworkAclRule:
+        Type: AWS::EC2::NetworkAclEntry
+        Properties:
+            CidrBlock: 0.0.0.0/0
+            Egress: true
+            NetworkAclId: !Ref MyNetworkAcl
+            Protocol: -1
+            RuleAction: deny
+            RuleNumber: 1    
+    PublicSubnetAndMyNetworkAclAssociation:
+        Type: AWS::EC2::SubnetNetworkAclAssociation
+        Properties:
+            NetworkAclId: !Ref MyNetworkAcl
+            SubnetId: !Ref PublicSubnet
+    ####################
+    # Internet Gateway #
+    ####################
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway    
+    InternetGatewayAndPrivateVpcAssociation:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties: 
+            InternetGatewayId: !Ref InternetGateway
+            VpcId: !Ref PrivateVpc
+    ################
+    # Route Tables #
+    ################
+    RouteTableForPublicSubnet:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref PrivateVpc
+    InternetRoute:
+        Type: AWS::EC2::Route
+        Properties:
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref InternetGateway
+            RouteTableId: !Ref RouteTableForPublicSubnet
+    RouteTableForPublicSubnetAndPublicSubnetAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:          
+            RouteTableId: !Ref RouteTableForPublicSubnet
+            SubnetId: !Ref PublicSubnet
