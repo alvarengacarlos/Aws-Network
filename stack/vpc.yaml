@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  # Total addresses: 64
+  # Network address: 172.16.0.0
+  # Broadcast: 172.16.0.64
+  # Netmask: /26
+  PrivateVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 172.16.0.0/26
+      EnableDnsHostnames: false
+      EnableDnsSupport: false
+Outputs:
+  PrivateVpcId:
+    Value: !Ref PrivateVpc
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateVpcId"

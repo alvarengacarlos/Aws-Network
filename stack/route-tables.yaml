@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  RouteTableForPublicSubnet:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  InternetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !ImportValue simple-network-internet-gateway-InternetGatewayId
+      RouteTableId: !Ref RouteTableForPublicSubnet
+  RouteTableForPublicSubnetAndPublicSubnetAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTableForPublicSubnet
+      SubnetId: !ImportValue simple-network-subnets-PublicSubnetId

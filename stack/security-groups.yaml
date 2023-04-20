@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  ###################
+  # Security Groups #
+  ###################
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "this security group no allow any traffic"
+      GroupName: ForPublicInstance
+      VpcId: !Ref PrivateVpc

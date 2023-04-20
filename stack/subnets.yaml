@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  # Total addresses: 16
+  # Network address: 172.16.0.0
+  # Broadcast: 172.16.0.15
+  # Netmask: /28
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1a"
+      CidrBlock: 172.16.0.0/28
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  # Total addresses: 16
+  # Network address: 172.16.0.16
+  # Broadcast: 172.16.0.31
+  # Netmask: /28
+  PrivateSubnet0:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1b"
+      CidrBlock: 172.16.0.16/28
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  # Total addresses: 16
+  # Network address: 172.16.0.32
+  # Broadcast: 172.16.0.47
+  # Netmask: /28
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1c"
+      CidrBlock: 172.16.0.32/28
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  # Total addresses: 16
+  # Network address: 172.16.0.48
+  # Broadcast: 172.16.0.64
+  # Netmask: /28
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1d"
+      CidrBlock: 172.16.0.48/28
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+Outputs:
+  PublicSubnet:
+    Value: !Ref PublicSubnet
+    Export:
+      Name: !Sub "${AWS::StackName}-PublicSubnetId"
+  PrivateSubnet0:
+    Value: !Ref PrivateSubnet0
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnet0Id"
+  PrivateSubnet1:
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1Id"
+  PrivateSubnet2:
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2Id"

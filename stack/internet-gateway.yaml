@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+  InternetGatewayAndPrivateVpcAssociation:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+Outputs:
+  InternetGateway:
+    Value: !Ref InternetGateway
+    Export:
+      Name: simple-network-internet-gateway-InternetGatewayId

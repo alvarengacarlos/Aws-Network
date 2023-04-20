@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  # For Public Subnet
+  MyNetworkAclForPublicSubnet:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  InboundRuleForMyNetworkAclForPublicSubnet:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: false
+      NetworkAclId: !Ref MyNetworkAclForPublicSubnet
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  OutboundForMyNetworkAclForPublicSubnet:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: true
+      NetworkAclId: !Ref MyNetworkAclForPublicSubnet
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  PublicSubnetAndMyNetworkAclForPublicSubnetAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      NetworkAclId: !Ref MyNetworkAclForPublicSubnet
+      SubnetId: !ImportValue simple-network-subnets-PublicSubnetId
+  # For Private Subnet 0
+  MyNetworkAclForPrivateSubnet0:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  InboundMyNetworkAclForPrivateSubnet0:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: false
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet0
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  OutboundMyNetworkAclForPrivateSubnet0:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: true
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet0
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  PrivateSubnetAndMyNetworkAclForPrivateSubnet0Association:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet0
+      SubnetId: !ImportValue simple-network-subnets-PrivateSubnet0Id
+  # For private subnet 1
+  MyNetworkAclForPrivateSubnet1:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  InboundMyNetworkAclForPrivateSubnet1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: false
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet1
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  OutboundMyNetworkAclForPrivateSubnet1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: true
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet1
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  PrivateSubnetAndMyNetworkAclForPrivateSubnet1Association:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet1
+      SubnetId: !ImportValue simple-network-subnets-PrivateSubnet0Id
+  # For private subnet 2
+  MyNetworkAclForPrivateSubnet2:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !ImportValue simple-network-vpc-PrivateVpcId
+  InboundMyNetworkAclForPrivateSubnet2:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: false
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet2
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  OutboundMyNetworkAclForPrivateSubnet2:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: true
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet2
+      Protocol: -1
+      RuleAction: deny
+      RuleNumber: 1
+  PrivateSubnetAndMyNetworkAclForPrivateSubnet2Association:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      NetworkAclId: !Ref MyNetworkAclForPrivateSubnet2
+      SubnetId: !ImportValue simple-network-subnets-PrivateSubnet2Id
