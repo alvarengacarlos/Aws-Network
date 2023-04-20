@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-007855ac798b5175e
+      InstanceType: t2.micro      
+      SecurityGroupIds:
+        - !ImportValue simple-network-security-groups-SecurityGroupForWebServerId
+      SubnetId: !ImportValue simple-network-subnets-PublicSubnetId
+      UserData: 
+        !Sub |           
+          #!/bin/bash
+          echo "Hello, world!"
+#TODO: Enable the Session Manger to connect in ec2

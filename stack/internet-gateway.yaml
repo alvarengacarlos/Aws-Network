@@ -12,4 +12,4 @@ Outputs:
   InternetGateway:
     Value: !Ref InternetGateway
     Export:
-      Name: simple-network-internet-gateway-InternetGatewayId
+      Name: !Sub "${AWS::StackName}-InternetGatewayId"

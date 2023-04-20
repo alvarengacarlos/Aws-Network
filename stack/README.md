@@ -31,3 +31,8 @@ aws cloudformation create-stack --stack-name simple-network-route-tables --templ
 ```bash
 aws cloudformation create-stack --stack-name simple-network-security-groups --template-body file://$(pwd)/security-groups.yaml
 ```
+
+- Create security groups stack:
+```bash
+aws cloudformation create-stack --stack-name simple-network--ec2-instances --template-body file://$(pwd)/ec2-instances.yaml
+```
