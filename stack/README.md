@@ -34,5 +34,5 @@ aws cloudformation create-stack --stack-name simple-network-security-groups --te
 
 - Create security groups stack:
 ```bash
-aws cloudformation create-stack --stack-name simple-network--ec2-instances --template-body file://$(pwd)/ec2-instances.yaml
+aws cloudformation create-stack --stack-name simple-network-ec2-instances --template-body file://$(pwd)/ec2-instances.yaml
 ```
