@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Resources:
+  # Ubuntu Server
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
@@ -9,8 +10,12 @@ Resources:
       SecurityGroupIds:
         - !ImportValue simple-network-security-groups-SecurityGroupForWebServerId
       SubnetId: !ImportValue simple-network-subnets-PublicSubnetId
-      UserData: 
-        !Sub |           
+      UserData:
+        Fn::Base64:
+          |          
           #!/bin/bash
-          echo "Hello, world!"
+          sudo apt update
+          sudo apt upgrate
+          sudo snap install amazon-ssm-agent --classic
+          sudo snap start amazon-ssm-agent
 #TODO: Enable the Session Manger to connect in ec2

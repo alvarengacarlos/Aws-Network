@@ -84,7 +84,7 @@ Resources:
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
       NetworkAclId: !Ref MyNetworkAclForPrivateSubnet1
-      SubnetId: !ImportValue simple-network-subnets-PrivateSubnet0Id
+      SubnetId: !ImportValue simple-network-subnets-PrivateSubnet1Id
   # For private subnet 2
   MyNetworkAclForPrivateSubnet2:
     Type: AWS::EC2::NetworkAcl
